@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">DeNetTestTree</string>
+    <string name="add_a_child_to_the_current_node">Add a child to the current node</string>
+    <string name="child_name">child name</string>
+    <string name="node_name">Node name</string>
 </resources>
