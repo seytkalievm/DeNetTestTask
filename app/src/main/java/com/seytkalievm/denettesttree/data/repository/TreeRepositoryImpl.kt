@@ -2,8 +2,9 @@ package com.seytkalievm.denettesttree.data.repository
 
 import com.seytkalievm.denettesttree.data.datasource.HardcodedDataSource
 import com.seytkalievm.denettesttree.data.model.Node
+import javax.inject.Inject
 
-class TreeRepositoryImpl: TreeRepository {
+class TreeRepositoryImpl @Inject constructor(): TreeRepository {
 
     private val dataSource = HardcodedDataSource
 
