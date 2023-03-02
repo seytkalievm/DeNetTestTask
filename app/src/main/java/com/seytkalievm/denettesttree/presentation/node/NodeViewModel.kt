@@ -1,6 +1,5 @@
 package com.seytkalievm.denettesttree.presentation.node
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,9 +18,16 @@ class NodeViewModel @Inject constructor(
     private val _children = MutableLiveData<List<Node>>()
     val children: LiveData<List<Node>> get() = _children
 
-    init {
-        _node.value = repo.getRoot()
-        _children.value = node.value?.children
+    fun setNode(curNode: Node?) {
+        if (curNode != null) {
+            curNode.let {
+                _node.value = it
+                _children.value = it.children
+            }
+        } else {
+            _node.value = repo.getRoot()
+            _children.value = _node.value?.children
+        }
     }
 
     fun addChild() {

@@ -1,10 +1,13 @@
 package com.seytkalievm.denettesttree.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 class Node (
     private val _parent: Node? = null,
     private val _children: MutableList<Node> = mutableListOf()
-) {
-
+) : Parcelable {
     val children get() = _children
     val parent get() = _parent
 

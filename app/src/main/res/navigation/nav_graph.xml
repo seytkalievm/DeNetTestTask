@@ -4,10 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/nodeFragment">
-
     <fragment
         android:id="@+id/nodeFragment"
         android:name="com.seytkalievm.denettesttree.presentation.node.NodeFragment"
-        android:label="fragment_node"
         tools:layout="@layout/fragment_node" />
+    <action
+        android:id="@+id/action_global_nodeFragment"
+        app:launchSingleTop="false"
+        app:destination="@id/nodeFragment" >
+        <argument
+            android:name="Node"
+            app:argType="com.seytkalievm.denettesttree.data.model.Node"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </action>
 </navigation>
