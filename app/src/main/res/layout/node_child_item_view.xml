@@ -26,11 +26,10 @@
             android:layout_marginHorizontal="16dp"/>
 
         <ImageButton
-            android:background="@color/white"
+            android:background="@color/transparent"
             android:id="@+id/delete_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            app:tint="@color/red"
             app:srcCompat="@drawable/baseline_delete_24"
             android:contentDescription="@string/delete_child_node" />
 
