@@ -1,5 +1,6 @@
 package com.seytkalievm.denettesttree.presentation.node_fragment
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.seytkalievm.denettesttree.data.model.Node
 import com.seytkalievm.denettesttree.data.repository.RoomTreeRepository
@@ -7,6 +8,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+private const val TAG = "NodeViewModel"
 
 @HiltViewModel
 class NodeViewModel @Inject constructor(
@@ -54,7 +57,11 @@ class NodeViewModel @Inject constructor(
     fun deleteChild(id: String) {
         _node.value?.let { node ->
             viewModelScope.launch(Dispatchers.IO) {
-                repo.deleteChild(node, id)
+                try {
+                    repo.deleteChild(node, id)
+                } catch (e: Exception) {
+                    Log.i(TAG, "deleteChild: $e")
+                }
             }
         }
     }
