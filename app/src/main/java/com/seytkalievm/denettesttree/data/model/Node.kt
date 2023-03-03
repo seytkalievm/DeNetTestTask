@@ -1,23 +1,15 @@
 package com.seytkalievm.denettesttree.data.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.util.UUID
 
-@Parcelize
-class Node (
-    private val _parent: Node? = null,
-    private val _children: MutableList<Node> = mutableListOf()
-) : Parcelable {
-    val children get() = _children
-    val parent get() = _parent
-
-    fun addChild() = _children.add(Node(_parent = this))
-
-    fun deleteChild(node: Node) = _children.remove(node)
-
-    /*
-    Take last 20 bytes of the hashCode
-     */
+@Entity(tableName = "nodes_table")
+data class Node(
+    @PrimaryKey @ColumnInfo val id: String = UUID.randomUUID().toString(),
+    @ColumnInfo val parent: String = "null",
+    @ColumnInfo val children: List<String> = emptyList(),
+) {
     fun getName() = this.hashCode().toString(2).takeLast(20)
-
 }

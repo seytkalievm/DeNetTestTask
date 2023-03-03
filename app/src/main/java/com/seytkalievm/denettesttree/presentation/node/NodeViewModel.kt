@@ -1,39 +1,54 @@
 package com.seytkalievm.denettesttree.presentation.node
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.seytkalievm.denettesttree.data.model.Node
-import com.seytkalievm.denettesttree.data.repository.TreeRepository
+import com.seytkalievm.denettesttree.data.repository.RoomTreeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NodeViewModel @Inject constructor(
-    private val repo: TreeRepository
+    private val repo: RoomTreeRepository,
 ): ViewModel() {
-    private val _node = MutableLiveData<Node>()
+    private var _node = MutableLiveData<Node>()
     val node: LiveData<Node> get() = _node
 
-    private val _children = MutableLiveData<List<Node>>()
+    private var _children = MutableLiveData<List<Node>>()
     val children: LiveData<List<Node>> get() = _children
 
-    fun setNode(curNode: Node?) {
-        if (curNode != null) {
-            curNode.let {
-                _node.value = it
-                _children.value = it.children
+    fun setNode(id: String?) {
+        viewModelScope.launch (Dispatchers.IO) {
+            if (id == "null" || id == null) {
+                repo.getRoot().collect { node ->
+                    if (node == null) {
+                        repo.createRoot()
+                    }
+                    _node.postValue(node)
+                }
+            } else {
+                repo.getNodeById(id).collect{
+                    _node.postValue(it)
+                }
             }
-        } else {
-            _node.value = repo.getRoot()
-            _children.value = _node.value?.children
+
         }
     }
 
     fun addChild() {
-        node.value?.let {node ->
-            repo.addChild(node)
-            _children.postValue(node.children)
+        _node.value?.let { node ->
+            viewModelScope.launch (Dispatchers.IO) {
+                repo.addChild(node)
+            }
+        }
+    }
+
+    fun getNodeChildren(id: String){
+        viewModelScope.launch( Dispatchers.IO) {
+            repo.getNodeChildren(id).collect {
+                _children.postValue(it)
+            }
         }
     }
 }
