@@ -32,15 +32,16 @@ class NodeFragment : Fragment() {
         val nodeId = this.arguments?.getString("node")
         viewModel.setNode(nodeId)
 
-        val adapter = NodeChildAdapter {
-            navigateToChild(it.id)
-        }
+        val adapter = NodeChildAdapter(
+            navigationListener = { navigateToChild(it.id) },
+            deleteListener = { deleteChild(it.id) }
+        )
 
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.nodeChildrenRv.adapter = adapter
+        binding.nodeChildrenRv.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.node.observe(viewLifecycleOwner) { node ->
-            binding.textView.text = node.getName()
+            binding.nodeNameTv.text = node.getName()
             viewModel.getNodeChildren(node.id)
         }
 
@@ -48,7 +49,7 @@ class NodeFragment : Fragment() {
             adapter.submitList(children)
         }
 
-        binding.floatingActionButton.setOnClickListener {
+        binding.addChildFab.setOnClickListener {
             viewModel.addChild()
         }
 
@@ -60,5 +61,8 @@ class NodeFragment : Fragment() {
         findNavController().navigate(action, bundle)
     }
 
+    private fun deleteChild(child: String) {
+        viewModel.deleteChild(child)
+    }
 
 }

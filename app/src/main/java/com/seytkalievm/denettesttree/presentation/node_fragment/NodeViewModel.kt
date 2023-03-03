@@ -51,4 +51,12 @@ class NodeViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteChild(id: String) {
+        _node.value?.let {node ->
+            viewModelScope.launch(Dispatchers.IO) {
+                repo.deleteChild(node, id)
+            }
+        }
+    }
 }
