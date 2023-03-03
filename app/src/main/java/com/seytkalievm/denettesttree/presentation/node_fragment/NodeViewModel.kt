@@ -1,4 +1,4 @@
-package com.seytkalievm.denettesttree.presentation.node
+package com.seytkalievm.denettesttree.presentation.node_fragment
 
 import androidx.lifecycle.*
 import com.seytkalievm.denettesttree.data.model.Node
@@ -22,30 +22,29 @@ class NodeViewModel @Inject constructor(
         viewModelScope.launch (Dispatchers.IO) {
             if (id == "null" || id == null) {
                 repo.getRoot().collect { node ->
+                     // at the very first app initialization table is empty
+                     //thus, we need to create root node
                     if (node == null) {
                         repo.createRoot()
                     }
                     _node.postValue(node)
                 }
             } else {
-                repo.getNodeById(id).collect{
-                    _node.postValue(it)
-                }
+                repo.getNodeById(id).collect { node -> _node.postValue(node) }
             }
-
         }
     }
 
     fun addChild() {
         _node.value?.let { node ->
-            viewModelScope.launch (Dispatchers.IO) {
+            viewModelScope.launch(Dispatchers.IO) {
                 repo.addChild(node)
             }
         }
     }
 
     fun getNodeChildren(id: String){
-        viewModelScope.launch( Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             repo.getNodeChildren(id).collect {
                 _children.postValue(it)
             }
@@ -53,7 +52,7 @@ class NodeViewModel @Inject constructor(
     }
 
     fun deleteChild(id: String) {
-        _node.value?.let {node ->
+        _node.value?.let { node ->
             viewModelScope.launch(Dispatchers.IO) {
                 repo.deleteChild(node, id)
             }

@@ -14,7 +14,7 @@ interface RoomTreeRepository {
 
     suspend fun deleteNode(node: Node)
 
-    suspend fun deleteChildById(id: String)
+    suspend fun deleteChild(node: Node, childId: String)
 
     fun getNodeChildren(id: String): Flow<List<Node>>
 }

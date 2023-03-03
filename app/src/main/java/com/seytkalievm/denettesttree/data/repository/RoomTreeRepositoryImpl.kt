@@ -28,19 +28,23 @@ class RoomTreeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteNode(node: Node) {
-        if (node.children.isEmpty()){
-            dao.deleteNode(node)
-            return
-        }
+        // somehow room thinks that empty list like this [] is of size 1 and is not empty
+        if (node.children.size > 1) {
+            for (childId in node.children) {
+                val child = dao.getChildById(childId)
 
-        for (child in node.children) {
-            val childNode = dao.getChildById(child)
-            deleteNode(childNode)
+                // room also may think that non-null node is null
+                if (child != null) deleteNode(child)
+            }
         }
+        dao.deleteNode(node)
     }
 
-    override suspend fun deleteChildById(id: String) {
-        deleteNode(dao.getChildById(id))
+    override suspend fun deleteChild(node: Node, childId: String) {
+        val newNode = node.copy(children = node.children - childId)
+        val child = dao.getChildById(childId)
+        deleteNode(child)
+        dao.updateNode(newNode)
     }
 
     override fun getNodeChildren(id: String): Flow<List<Node>> {

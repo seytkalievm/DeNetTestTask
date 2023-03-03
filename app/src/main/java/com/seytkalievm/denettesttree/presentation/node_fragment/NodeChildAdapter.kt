@@ -1,4 +1,4 @@
-package com.seytkalievm.denettesttree.presentation.node
+package com.seytkalievm.denettesttree.presentation.node_fragment
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,8 +14,7 @@ typealias DeleteListener = (node: Node) -> Unit
 class NodeChildAdapter(
     private val navigationListener: NavigationListener,
     private val deleteListener: DeleteListener,
-    )
-    : ListAdapter<Node, NodeChildAdapter.NodeChildViewHolder>(DiffCallback) {
+    ) : ListAdapter<Node, NodeChildAdapter.NodeChildViewHolder>(DiffCallback) {
 
     inner class NodeChildViewHolder(
         private val binding: NodeChildItemViewBinding
@@ -39,17 +38,14 @@ class NodeChildAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NodeChildViewHolder {
         return NodeChildViewHolder(
-            NodeChildItemViewBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
+            NodeChildItemViewBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
     override fun onBindViewHolder(holder: NodeChildViewHolder, position: Int) {
         val item = getItem(position)
-        holder.itemView.setOnClickListener {
-            navigationListener(item)
-        }
+        holder.itemView.setOnClickListener { navigationListener(item) }
         holder.bind(item)
     }
 

@@ -1,4 +1,4 @@
-package com.seytkalievm.denettesttree.presentation.node
+package com.seytkalievm.denettesttree.presentation.node_fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -29,28 +29,26 @@ class NodeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val nodeId = this.arguments?.getString("node")
-        viewModel.setNode(nodeId)
+
+        viewModel.setNode(this.arguments?.getString("node"))
 
         val adapter = NodeChildAdapter(
             navigationListener = { navigateToChild(it.id) },
             deleteListener = { deleteChild(it.id) }
         )
 
-        binding.nodeChildrenRv.adapter = adapter
-        binding.nodeChildrenRv.layoutManager = LinearLayoutManager(requireContext())
-
-        viewModel.node.observe(viewLifecycleOwner) { node ->
-            binding.nodeNameTv.text = node.getName()
-            viewModel.getNodeChildren(node.id)
+        binding.apply {
+            nodeChildrenRv.adapter = adapter
+            nodeChildrenRv.layoutManager = LinearLayoutManager(requireContext())
+            addChildFab.setOnClickListener { viewModel.addChild() }
         }
 
-        viewModel.children.observe(viewLifecycleOwner) { children ->
-            adapter.submitList(children)
-        }
-
-        binding.addChildFab.setOnClickListener {
-            viewModel.addChild()
+        viewModel.apply {
+            node.observe(viewLifecycleOwner) { node ->
+                binding.nodeNameTv.text = node.getName()
+                viewModel.getNodeChildren(node.id)
+            }
+            children.observe(viewLifecycleOwner) { children -> adapter.submitList(children) }
         }
 
     }
