@@ -7,14 +7,13 @@
     <fragment
         android:id="@+id/nodeFragment"
         android:name="com.seytkalievm.denettesttree.presentation.node_fragment.NodeFragment"
-        tools:layout="@layout/fragment_node" />
-    <action
-        android:id="@+id/action_global_nodeFragment"
-        app:launchSingleTop="false"
-        app:destination="@id/nodeFragment" >
+        tools:layout="@layout/fragment_node" >
         <argument
             android:name="Node"
             app:argType="string"
             android:defaultValue="null" />
-    </action>
+        <action
+            android:id="@+id/action_nodeFragment_self"
+            app:destination="@id/nodeFragment" />
+    </fragment>
 </navigation>
