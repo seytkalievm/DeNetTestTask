@@ -23,6 +23,7 @@
 <img src="assets/with_children.png" width="200">
 
 При нажатии на потомка, открывается экран с его детьми. 
+
 <img src="assets/empty_child.png" width="200">
 
 На данном экране также можно добавлять детей. 
